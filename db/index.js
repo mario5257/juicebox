@@ -1,6 +1,8 @@
 const { Client } = require('pg');
-const client = new Client('postgres://localhost:5432/juicebox-dev');
-
+const client = new Client({
+  connectionString: process.env.DATABASE_URL || 'postgres://localhost:5432/juicebox-dev',
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : undefined,
+});
 async function getAllUsers() {
   try{const { rows } = await client.query(
     `SELECT id, username, password, name, location, active
@@ -260,7 +262,7 @@ async function createUser({ username, password, name, location }) {
           message: "Could not find a post with that postId"
         };
       }
-      
+
       const { rows: tags } = await client.query(`
         SELECT tags.*
         FROM tags
