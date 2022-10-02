@@ -9,6 +9,7 @@ server.use(morgan('dev'));
 
 const client = new Client({
     connectionString: process.env.DATABASE_URL || 'postgres://localhost:5432/juicebox-dev',
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : undefined,
   });
 client.connect();
 server.use(express.json());
