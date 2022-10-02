@@ -23,7 +23,7 @@ usersRouter.get('/', async (req, res) => {
 
 usersRouter.post('/login', async (req, res, next) => {
     const { username, password } = await req.body;
-  
+  console.log(req.body);
     // request must have both
     if (!username || !password) {
       next({
